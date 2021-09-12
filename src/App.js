@@ -23,7 +23,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React2
+          Save React
         </a>
       </header>
     </div>
