@@ -18,6 +18,7 @@ pipeline {
                     
                     echo 'Pulling... git-branch : ' + env.GIT_BRANCH
                     echo 'Pulling... env-branch : ' + env.BRANCH_NAME
+                    echo 'Pulling... scm-branch : ' + scm.branches[0].name
 
                     if(commitHash.isEmpty()){
                         commitHash = 'main'
