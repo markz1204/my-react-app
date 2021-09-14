@@ -26,7 +26,7 @@ pipeline {
                     }
                     */
                     
-                    checkout([$class: 'GitSCM', branches: [[name: env.BRANCH_NAME]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: scm.branches[0].name]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
                         
                 }
                 
