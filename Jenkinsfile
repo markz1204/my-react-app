@@ -1,26 +1,29 @@
 pipeline {
     agent any
-    environment {
+    environment { 
         CI = 'true'
-        registry = 'zyl1204/my-react-app'
-        registryCredential = 'dockerhub_login'
-        dockerImage = ''
+        registry = "zyl1204/my-react-app" 
+        registryCredential = 'dockerhub-login'
+        dockerImage = '' 
     }
-
-    //skip the default scm checkout
+    
     options {
         skipDefaultCheckout(true)
     }
-
+    
     stages {
-        stage('Checkout') {
+        stage('Checkout'){
             steps {
-                script {
-                    if (commitHash.isEmpty()) {
+                script{
+                    
+                    if(commitHash.isEmpty()){
                         commitHash = 'main'
                     }
+                    
                     checkout([$class: 'GitSCM', branches: [[name: commitHash ]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
+                        
                 }
+                
             }
         }
         stage('Build') {
@@ -47,29 +50,29 @@ pipeline {
         }
         stage('Dockerise app') {
             steps {
-                script {
-                    sh 'docker build -t my-react-app:latest .'
+                script { 
+                    sh 'docker build -t my-react-app:latest .' 
                     sh 'docker tag my-react-app $registry:$BUILD_NUMBER'
                 }
             }
         }
         stage('Push to docker hub') {
-            agent any
             steps {
-                script {
-                    withDockerRegistry('', registryCredential ) {
+                script { 
+                    withDockerRegistry(credentialsId: registryCredential) {
                         sh  'docker push $registry:$BUILD_NUMBER'
                     }
                 }
             }
         }
         stage('Remove Unused docker image') {
-            steps {
-                sh "docker rmi $registry:$BUILD_NUMBER"
-                sh "docker rmi $registry:latest"
-            }
+          steps{
+            sh "docker rmi $registry:$BUILD_NUMBER"
+            sh "docker rmi my-react-app:latest"
+    
+          }
         }
-        stage('Deliver') {
+        stage('Deliver') { 
             steps {
                 echo '"this is a post action area"'
             }
