@@ -16,6 +16,9 @@ pipeline {
             steps {
                 script{
                     
+                    echo 'Pulling... git-branch : ' + env.GIT_BRANCH
+                    echo 'Pulling... env-branch : ' + env.BRANCH_NAME
+
                     if(commitHash.isEmpty()){
                         commitHash = 'main'
                     }
