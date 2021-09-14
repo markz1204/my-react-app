@@ -5,6 +5,7 @@ pipeline {
         registry = "zyl1204/my-react-app" 
         registryCredential = 'dockerhub-login'
         dockerImage = '' 
+        branch_name = ''
     }
     
     options {
@@ -25,8 +26,12 @@ pipeline {
                         commitHash = 'main'
                     }
                     */
+
+                    if (scm.branches[0].name.contains("*/")) {
+                        $branch_name = scm.branches[0].name.split("\\*/")[1]
+                    }
                     
-                    checkout([$class: 'GitSCM', branches: [[name: scm.branches[0].name]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: $branch_name]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
                         
                 }
                 
