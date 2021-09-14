@@ -16,11 +16,17 @@ pipeline {
             steps {
                 script{
                     
+                    echo 'Pulling... git-branch : ' + env.GIT_BRANCH
+                    echo 'Pulling... env-branch : ' + env.BRANCH_NAME
+                    echo 'Pulling... scm-branch : ' + scm.branches[0].name
+
+                    /*
                     if(commitHash.isEmpty()){
                         commitHash = 'main'
                     }
+                    */
                     
-                    checkout([$class: 'GitSCM', branches: [[name: commitHash ]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: env.BRANCH_NAME]], userRemoteConfigs: [[url: 'https://github.com/markz1204/my-react-app.git']]])
                         
                 }
                 
